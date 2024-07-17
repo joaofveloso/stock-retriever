@@ -1,7 +1,9 @@
 package com.stock.top.ten.core.usecases;
 
 import com.stock.top.ten.configs.StockPriceCollectorProperty;
+import com.stock.top.ten.core.domain.PeriodCalculation;
 import com.stock.top.ten.core.domain.StockData;
+import com.stock.top.ten.core.domain.StockPeriodRange;
 import com.stock.top.ten.core.exceptions.ApplicatioException;
 import com.stock.top.ten.core.ports.in.StockUnityCollectorCommand;
 import com.stock.top.ten.core.ports.out.StockCollectorRepository;
@@ -14,7 +16,9 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -48,7 +52,8 @@ public class StockUnityCollectorUseCase implements StockUnityCollectorCommand {
     }
 
     private Data setDefaultStocksIfEmpty(Data data) {
-        return data.withStocks(data.stocks().isEmpty() ? property.getAllowedStocks() : data.stocks());
+        return data.withStocks(data.stocks().isEmpty()
+                ? Optional.ofNullable(property.getAllowedStocks()).orElse(Collections.emptyList()) : data.stocks());
     }
 
     private Mono<Void> produceMessages(StockData stockData) {

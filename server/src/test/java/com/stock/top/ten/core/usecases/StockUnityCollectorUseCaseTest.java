@@ -42,7 +42,7 @@ public class StockUnityCollectorUseCaseTest {
 
     @Test
     public void execute_withValidStocks_shouldFilterStockDataByDateSuccessfully() {
-        StockData stockData = new StockData(null, List.of());
+        StockData stockData = new StockData(StockData.MetaData.builder().build(), List.of());
         when(priceCollectorRepository.obtainStocksInformation(any()))
                 .thenReturn(Mono.just(stockData));
         when(stockMessagingRepository.sendMetadata(any())).thenReturn(Mono.empty());
