@@ -52,16 +52,15 @@ public class StockUnityCollectorUseCase implements StockUnityCollectorCommand {
     }
 
     private Mono<Void> produceMessages(StockData stockData) {
-        return Mono.fromRunnable(() -> {
-                    stockMessagingRepository.sendMetadata(stockData.metaData()).subscribe();
+        return Mono.defer(() -> {
+                    Mono<Void> sendMetadata = stockMessagingRepository.sendMetadata(stockData.metaData());
                     List<Mono<Void>> list = stockData.timeSeries().stream()
                             .map(item -> item.withSymbol(stockData.metaData().symbol()))
                             .map(stockMessagingRepository::sendDailyStock)
                             .toList();
-                    Mono.when(list)
-                            .doOnTerminate(() -> log.info(String.format("All messages published for %s stock",
-                                    stockData.metaData().symbol())))
-                            .subscribe();
+                    return sendMetadata.then(
+                            Mono.when(list).doOnTerminate(() ->log.info(String.format("All messages published for %s stock",
+                                    stockData.metaData().symbol()))));
                 })
                 .subscribeOn(Schedulers.boundedElastic())
                 .then();
@@ -75,7 +74,10 @@ public class StockUnityCollectorUseCase implements StockUnityCollectorCommand {
     }
 
     private boolean isWithinDefinedPeriodRange(LocalDate localDate, StockData.StockUnity dailyStock) {
-        return dailyStock.date().isBefore(localDate.plusDays(1))
-                && dailyStock.date().isAfter(localDate.minusDays(property.getNumberOfDays() + 1));
+
+        LocalDate saturday = PeriodCalculation.calculateEndDate(localDate.plusDays(1), StockPeriodRange.WEEKLY);
+        LocalDate sunday = PeriodCalculation.calculateStartDate(localDate.minusDays(property.getNumberOfDays() + 1), StockPeriodRange.WEEKLY);
+
+        return dailyStock.date().isBefore(saturday) && dailyStock.date().isAfter(sunday);
     }
 }
