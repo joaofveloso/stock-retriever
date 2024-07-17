@@ -10,5 +10,5 @@ import java.util.List;
 public record UpdateListOfStockRequest(
         @NotBlank(message = "End date is mandatory")
         @JsonFormat(pattern = "MM-dd-yyyy") LocalDate endDate,
-        @NotEmpty(message = "You must provide at least one stock symbol") List<String> stocks) {
+        List<String> stocks) {
 }

@@ -30,8 +30,10 @@ public class StockUnityCollectorUseCase implements StockUnityCollectorCommand {
     @Override
     public Mono<Void> execute(Data data) {
 
+        var newData = setDefaultStocksIfEmpty(data);
+
         List<String> allowedStocks = property.getAllowedStocks();
-        List<String> inputStocks = data.stocks();
+        List<String> inputStocks = newData.stocks();
 
         for (String stock : inputStocks) {
             if (!allowedStocks.contains(stock)) {
@@ -39,10 +41,14 @@ public class StockUnityCollectorUseCase implements StockUnityCollectorCommand {
             }
         }
 
-        return Flux.fromIterable(data.stocks()).flatMap(priceCollectorRepository::obtainStocksInformation)
-                .flatMap(dailyStocks -> filterStockDataByDate(dailyStocks, data.startDate()))
+        return Flux.fromIterable(newData.stocks()).flatMap(priceCollectorRepository::obtainStocksInformation)
+                .flatMap(dailyStocks -> filterStockDataByDate(dailyStocks, newData.startDate()))
                 .flatMap(this::produceMessages)
                 .then();
+    }
+
+    private Data setDefaultStocksIfEmpty(Data data) {
+        return data.withStocks(data.stocks().isEmpty() ? property.getAllowedStocks() : data.stocks());
     }
 
     private Mono<Void> produceMessages(StockData stockData) {

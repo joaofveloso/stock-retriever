@@ -1,22 +1,27 @@
 package com.stock.top.ten;
 
+import com.stock.top.ten.core.ports.in.StockUnityCollectorCommand;
+import com.stock.top.ten.core.usecases.StockUnityCollectorUseCase;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
+import java.util.Collections;
+
+@RequiredArgsConstructor
 @SpringBootApplication
 public class Application {
 
-    @Value("${spring.r2dbc.url}")
-    private String value;
+    private final StockUnityCollectorUseCase stockUnityCollectorUseCase;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     @PostConstruct
-    public void add() {
-        System.out.println("\n\n\n\n\n\n\n" + value + "\n\n\n\n\n\n\n\n\n");
+    public void init() {
+        stockUnityCollectorUseCase.execute(new StockUnityCollectorCommand.Data(LocalDate.now(), Collections.emptyList())).subscribe();
     }
 }
