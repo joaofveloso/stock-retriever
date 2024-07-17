@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: server
+  r2dbc:
+    url: ${SPRING_R2DBC_URL:r2dbc:mysql://localhost:3306/stock}
+    username: ${SPRING_R2DBC_USERNAME:user}
+    password: ${SPRING_R2DBC_PASSWORD:password}
+    pool:
+      initial-size: 10
+      max-size: 20
+      max-idle-time: 30s
+      max-acquire-time: 30s
+  flyway:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/stock}
+    user: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+    locations: classpath:db/migration
+    out-of-order: true
+    enabled: true
+    ignore-migration-patterns:
+  artemis:
+    mode: embedded
+    embedded:
+      enabled: true
+      persistent: false
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    default-property-inclusion: non_null
+com:
+  source:
+    alpha-vantage:
+      base-url: https://www.alphavantage.co/query
+      key: 73VDQ0ZXGVDBQ54N
+      number-of-days: 21
+      allowed-stocks:
+        - MSFT
+        - AAPL
+        - NVDA
+        - AMZN
+        - META
+        - GOOGL
+        - GOOG
+        - BRK.B
+        - LLY
+        - AVGO
+    stock-details:
+      MSFT:
+        name: Microsoft
+        image: https://img.logo.dev/office.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      AAPL:
+        name: Apple
+        image: https://img.logo.dev/apple.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      NVDA:
+        name: NVIDIA
+        image: https://img.logo.dev/nvidia.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      AMZN:
+        name: Amazon
+        image: https://img.logo.dev/amazon.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      META:
+        name: Meta
+        image: https://img.logo.dev/metacareers.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      GOOGL:
+        name: Alphabet Class A
+        image: https://img.logo.dev/google.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      GOOG:
+        name: Alphabet Class C
+        image: https://img.logo.dev/google.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      BRKB:
+        name: Berkshire Hathaway
+        image: https://img.logo.dev/bnsf.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      LLY:
+        name: Eli Lily
+        image: https://img.logo.dev/lilly.com?token=pk_GjWUU6QYTuCuzY5cc3Y9vw
+      AVGO:
+        name: Broadcom
+        image: https://img.logo.dev/broadcom.cn?token=pk_GjWUU6QYTuCuzY5cc3Y9vw

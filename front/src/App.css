@@ -1,0 +1,145 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  max-width: 1000px;
+  height: 90vh; /* Fill most of the screen height */
+  margin: 20px auto; /* Position it towards the top with margin */
+  border: 2px solid #ddd; /* Add border */
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 10px; /* Reduce margin-bottom for closer tabs */
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  width: 150px; /* Ensure the width is fixed */
+}
+
+.tab-button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.tab-button:hover {
+  background-color: #ddd;
+}
+
+.date-picker {
+  margin-bottom: 20px;
+}
+
+.carousel {
+  overflow: hidden;
+  width: 100%;
+  margin: 20px auto;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 120px;
+  margin: 5px;
+  padding: 2px;
+}
+
+.carousel-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  margin: 5px;
+  padding: 2px;
+}
+
+.carousel-item img.selected {
+
+  opacity: 0.5;
+}
+
+.carousel-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.prev, .next {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.download-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #45a049;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  z-index: 1000;
+  transition: opacity 1s ease-out;
+}
+
+.notification.success {
+  background-color: blue;
+}
+
+.notification.error {
+  background-color: red;
+}
+
+.notification.hidden {
+  opacity: 0;
+}
